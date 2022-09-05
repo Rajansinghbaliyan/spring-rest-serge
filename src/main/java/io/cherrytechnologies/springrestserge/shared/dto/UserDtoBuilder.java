@@ -10,7 +10,7 @@ public class UserDtoBuilder {
     protected String password;
     protected String encryptedPassword;
     protected String emailVerificationToken;
-    protected Boolean emailVerificationStatus;
+    protected Boolean emailVerificationStatus = false;
 
     public UserDtoBuilder setUserId(UUID userId) {
         this.userId = userId;
