@@ -10,31 +10,35 @@ public class CreateUserDetailRequestModel {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public CreateUserDetailRequestModel setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public CreateUserDetailRequestModel setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public CreateUserDetailRequestModel setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public CreateUserDetailRequestModel setPassword(String password) {
         this.password = password;
+        return this;
     }
 }
