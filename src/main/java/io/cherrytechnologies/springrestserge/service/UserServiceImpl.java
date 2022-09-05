@@ -8,9 +8,11 @@ import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
 import io.cherrytechnologies.springrestserge.shared.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
