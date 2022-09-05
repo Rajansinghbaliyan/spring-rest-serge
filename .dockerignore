@@ -1,0 +1,10 @@
+.idea
+.mvn
+.dockerignore
+.gitignore
+.git
+mvnw.cmd
+mvnw
+spring-rest-serge.iml
+Dockerfile
+.m2
