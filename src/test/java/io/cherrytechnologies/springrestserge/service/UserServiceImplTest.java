@@ -1,5 +1,6 @@
 package io.cherrytechnologies.springrestserge.service;
 
+import io.cherrytechnologies.springrestserge.exceptions.UserExistsException;
 import io.cherrytechnologies.springrestserge.exceptions.UserNotFoundException;
 import io.cherrytechnologies.springrestserge.io.entity.UserEntity;
 import io.cherrytechnologies.springrestserge.io.repository.UserRepository;
@@ -85,11 +86,37 @@ class UserServiceImplTest {
     }
 
     @Test
-    final void Test_save_user(){
+    final void Test_save_user() {
         when(userRepository.save(any(UserEntity.class))).thenReturn(UserMapper.dtoToEntity(dto));
+        when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
 
         UserDto returnDto = userService.saveUser(dto);
 
-        verify(userRepository,times(1)).save(UserMapper.dtoToEntity(dto));
+        verify(userRepository, times(1)).save(UserMapper.dtoToEntity(dto));
+        verify(userRepository, times(1)).findByEmail(dto.getEmail());
+
+        assertNotNull(returnDto);
+
+        assertNull(returnDto.getPassword());
+        assertNotNull(returnDto.getUserId());
+
+        assertEquals(returnDto.getFirstName(), dto.getFirstName());
+        assertEquals(returnDto.getLastName(), dto.getLastName());
+        assertEquals(returnDto.getEmail(), dto.getEmail());
+
+        assertNotEquals(returnDto.getUserId(), dto.getUserId());
+    }
+
+    @Test
+    final void Test_save_user_throw_exception_if_email_already_exist() {
+        when(userRepository.save(any(UserEntity.class))).thenReturn(UserMapper.dtoToEntity(dto));
+        when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.of(entity));
+
+        assertThrows(
+                UserExistsException.class,
+                () -> userService.saveUser(dto)
+        );
+
+        verify(userRepository, times(1)).findByEmail(dto.getEmail());
     }
 }
