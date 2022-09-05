@@ -43,4 +43,14 @@ public class UserRest {
         this.email = email;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "UserRest{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

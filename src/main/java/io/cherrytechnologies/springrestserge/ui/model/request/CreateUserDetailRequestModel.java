@@ -41,4 +41,14 @@ public class CreateUserDetailRequestModel {
         this.password = password;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "CreateUserDetailRequestModel{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
