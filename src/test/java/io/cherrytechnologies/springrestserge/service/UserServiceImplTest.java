@@ -92,8 +92,8 @@ class UserServiceImplTest {
 
         UserDto returnDto = userService.saveUser(dto);
 
-        verify(userRepository, times(1)).save(UserMapper.dtoToEntity(dto));
-        verify(userRepository, times(1)).findByEmail(dto.getEmail());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userRepository, times(1)).findByEmail(anyString());
 
         assertNotNull(returnDto);
 
