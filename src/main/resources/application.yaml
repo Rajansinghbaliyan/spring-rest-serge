@@ -26,4 +26,5 @@ logging:
 # Messages for exception
 user:
   not:
-    found: "user is not available. please try again"
+    found: "user is not available. please try again."
+  exists: "user with this email already exists. please try with different email."
