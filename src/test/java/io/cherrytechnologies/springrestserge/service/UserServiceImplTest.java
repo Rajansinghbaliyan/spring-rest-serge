@@ -1,5 +1,6 @@
 package io.cherrytechnologies.springrestserge.service;
 
+import io.cherrytechnologies.springrestserge.exceptions.UserNotFoundException;
 import io.cherrytechnologies.springrestserge.io.entity.UserEntity;
 import io.cherrytechnologies.springrestserge.io.repository.UserRepository;
 import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
@@ -9,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,11 +41,11 @@ class UserServiceImplTest {
 
     @Test
     final void Test_get_user_by_id() {
-        when(userRepository.findById(UUID.randomUUID())).thenReturn(Optional.of(entity));
-
-        verify(userRepository, times(1)).findById(UUID.randomUUID());
+        when(userRepository.findById(any())).thenReturn(Optional.of(entity));
 
         UserDto userDto = userService.getUserById(entity.getId());
+
+        verify(userRepository, times(1)).findById(any());
 
         assertNotNull(userDto);
         assertEquals(userDto.getUserId(), entity.getId());
@@ -54,18 +54,17 @@ class UserServiceImplTest {
         assertEquals(userDto.getEmail(), entity.getEmail());
         assertEquals(userDto.getEmailVerificationStatus(), entity.getEmailVerificationStatus());
         assertEquals(userDto.getEmailVerificationToken(), entity.getEmailVerificationToken());
+        assertEquals(userDto.getEncryptedPassword(), entity.getEncryptedPassword());
 
         assertNull(userDto.getPassword());
-        assertNull(userDto.getEncryptedPassword());
     }
 
     @Test
     final void Test_get_user_by_id_throw_exception_when_no_user_found() {
         when(userRepository.findById(UUID.randomUUID())).thenReturn(Optional.empty());
 
-        verify(userRepository, times(1)).findById(UUID.randomUUID());
 
-        assertThrows(UserPrincipalNotFoundException.class,
+        assertThrows(UserNotFoundException.class,
                 () -> userService.getUserById(UUID.randomUUID())
         );
     }
