@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +27,9 @@ class UserServiceImplTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    BCryptPasswordEncoder passwordEncoder;
 
     UserEntity entity;
 
@@ -89,11 +93,13 @@ class UserServiceImplTest {
     final void Test_save_user() {
         when(userRepository.save(any(UserEntity.class))).thenReturn(UserMapper.dtoToEntity(dto));
         when(userRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(dto.getPassword())).thenReturn(anyString());
 
         UserDto returnDto = userService.saveUser(dto);
 
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(userRepository, times(1)).findByEmail(anyString());
+        verify(passwordEncoder, times(1)).encode(dto.getPassword());
 
         assertNotNull(returnDto);
 

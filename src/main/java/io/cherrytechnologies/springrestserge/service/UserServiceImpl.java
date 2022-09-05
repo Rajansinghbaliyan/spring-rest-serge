@@ -8,6 +8,7 @@ import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
 import io.cherrytechnologies.springrestserge.shared.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Value("${user.not.found}")
     private String userNotFoundExceptionMessage;
@@ -34,12 +38,23 @@ public class UserServiceImpl implements UserService {
     public UserDto saveUser(UserDto dto) {
 
         dto.setUserId(null);
-        userRepository.findByEmail(dto.getEmail()).ifPresent((entity) -> {
-            throw new UserExistsException(userExistsExceptionMessage);
-        });
+
+        checkIfEmailExists(dto.getEmail());
+
+        dto.setEncryptedPassword(encryptedPassword(dto.getPassword()));
 
         UserEntity entity = userRepository.save(UserMapper.dtoToEntity(dto));
 
         return UserMapper.entityToDto(entity);
+    }
+
+    private String encryptedPassword(String rawPassword){
+        return passwordEncoder.encode(rawPassword);
+    }
+
+    private void checkIfEmailExists(String email) throws UserExistsException{
+        userRepository.findByEmail(email).ifPresent((entity) -> {
+            throw new UserExistsException(userExistsExceptionMessage);
+        });
     }
 }
