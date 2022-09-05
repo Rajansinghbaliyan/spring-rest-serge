@@ -15,3 +15,9 @@ spring:
         dialect: ${HIBERNATE_DIALECT}
   application:
     name: ${APPLICATION_NAME}
+  devtools:
+    remote:
+      restart:
+        enabled: true
+    restart:
+      enabled: true

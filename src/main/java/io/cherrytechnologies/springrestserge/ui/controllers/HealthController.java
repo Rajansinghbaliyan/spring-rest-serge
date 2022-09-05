@@ -15,6 +15,6 @@ public class HealthController {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<String> checkStatus() {
         return ResponseEntity
-                .ok("Server is up");
+                .ok("Server is up and dev tools are working?");
     }
 }

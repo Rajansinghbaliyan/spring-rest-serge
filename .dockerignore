@@ -7,4 +7,4 @@ mvnw.cmd
 mvnw
 spring-rest-serge.iml
 Dockerfile
-.m2
+#.m2

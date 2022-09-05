@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
   mysqldb:
     image: mysql:5.7
@@ -14,15 +14,19 @@ services:
   app:
     depends_on:
       - mysqldb
-    build: .
-    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    restart: always
     env_file: .env
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
     environment:
       DB_URL: "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?useSSL=false"
-#    volumes:
-#      - .m2:/root/.m2
+    volumes:
+      - .m2:/root/.m2
+      - ./src:/app/src
+      - ./target:/app/target
     stdin_open: true
     tty: true
 volumes:
