@@ -1,5 +1,6 @@
 package io.cherrytechnologies.springrestserge.shared.mapper;
 
+import io.cherrytechnologies.springrestserge.io.entity.UserEntity;
 import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
 import io.cherrytechnologies.springrestserge.shared.dto.UserDtoBuilder;
 import io.cherrytechnologies.springrestserge.ui.model.request.CreateUserDetailRequestModel;
@@ -21,5 +22,30 @@ public class UserMapper {
                 .setFirstName(dto.getFirstName())
                 .setLastName(dto.getLastName())
                 .setEmail(dto.getEmail());
+    }
+
+    public static UserEntity dtoToEntity(UserDto dto){
+        UserEntity entity = new UserEntity();
+        entity.setId(dto.getUserId());
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setEmail(dto.getEmail());
+        entity.setEncryptedPassword(dto.getEncryptedPassword());
+        entity.setEmailVerificationToken(dto.getEmailVerificationToken());
+        entity.setEmailVerificationStatus(dto.getEmailVerificationStatus());
+        return entity;
+    }
+
+    public static UserDto entityToDto(UserEntity entity){
+        return new UserDtoBuilder()
+                .setUserId(entity.getId())
+                .setFirstName(entity.getFirstName())
+                .setLastName(entity.getLastName())
+                .setEmail(entity.getEmail())
+                .setEncryptedPassword(entity.getEncryptedPassword())
+                .setEmailVerificationStatus(entity.getEmailVerificationStatus())
+                .setEmailVerificationToken(entity.getEmailVerificationToken())
+                .build();
+
     }
 }

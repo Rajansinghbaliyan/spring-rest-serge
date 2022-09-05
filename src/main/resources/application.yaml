@@ -21,3 +21,9 @@ spring:
 logging:
   level:
     web: ${WEB_LOGGING}
+
+
+# Messages for exception
+user:
+  not:
+    found: "user is not available. please try again"

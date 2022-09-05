@@ -1,5 +1,6 @@
 package io.cherrytechnologies.springrestserge.shared.mapper;
 
+import io.cherrytechnologies.springrestserge.io.entity.UserEntity;
 import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
 import io.cherrytechnologies.springrestserge.shared.dto.UserDtoBuilder;
 import io.cherrytechnologies.springrestserge.ui.model.request.CreateUserDetailRequestModel;
@@ -16,6 +17,8 @@ class UserMapperTest {
     UserDto userDto;
 
     CreateUserDetailRequestModel userDetailRequestModel;
+
+    UserEntity entity;
 
     @BeforeEach
     void setUp() {
@@ -34,6 +37,15 @@ class UserMapperTest {
                 .setLastName("Potter")
                 .setEmail("jamespotter@gmail.com")
                 .setPassword("asdkfjklasdfj24352435");
+
+        entity = new UserEntity();
+        entity.setId(UUID.randomUUID());
+        entity.setFirstName("James");
+        entity.setLastName("Potter");
+        entity.setEmail("jamespotter@gmail.com");
+        entity.setEncryptedPassword("asdfasdkfhj435435");
+        entity.setEmailVerificationStatus(false);
+        entity.setEmailVerificationToken("asdfasdf345gfsdfg456");
     }
 
     @Test
@@ -59,5 +71,36 @@ class UserMapperTest {
         assertEquals(userRest.getFirstName(), userDto.getFirstName());
         assertEquals(userRest.getLastName(), userDto.getLastName());
         assertEquals(userRest.getEmail(), userDto.getEmail());
+    }
+
+    @Test
+    final void Test_dto_to_entity(){
+        UserEntity entity = UserMapper.dtoToEntity(userDto);
+
+        assertNotNull(entity);
+
+        assertEquals(entity.getId(),userDto.getUserId());
+        assertEquals(entity.getFirstName(), userDto.getFirstName());
+        assertEquals(entity.getLastName(), userDto.getLastName());
+        assertEquals(entity.getEmail(), userDto.getEmail());
+        assertEquals(entity.getEmailVerificationStatus(), userDto.getEmailVerificationStatus());
+        assertEquals(entity.getEmailVerificationToken(), userDto.getEmailVerificationToken());
+        assertEquals(entity.getEncryptedPassword(), userDto.getEncryptedPassword());
+    }
+
+    @Test
+    final void Test_entity_to_dto(){
+        UserDto dto = UserMapper.entityToDto(entity);
+
+        assertNotNull(dto);
+
+        assertEquals(entity.getId(),dto.getUserId());
+        assertEquals(entity.getFirstName(), dto.getFirstName());
+        assertEquals(entity.getLastName(), dto.getLastName());
+        assertEquals(entity.getEmail(), dto.getEmail());
+        assertEquals(entity.getEmailVerificationStatus(), dto.getEmailVerificationStatus());
+        assertEquals(entity.getEmailVerificationToken(), dto.getEmailVerificationToken());
+        assertEquals(entity.getEncryptedPassword(), dto.getEncryptedPassword());
+
     }
 }
