@@ -16,8 +16,8 @@ spring:
   application:
     name: ${APPLICATION_NAME}
   devtools:
-    remote:
-      restart:
-        enabled: true
     restart:
-      enabled: true
+      enabled: ${DEV_TOOLS}
+logging:
+  level:
+    web: ${WEB_LOGGING}
