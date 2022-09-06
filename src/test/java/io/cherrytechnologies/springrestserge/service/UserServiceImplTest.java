@@ -39,7 +39,7 @@ class UserServiceImplTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         entity = new UserEntity();
-        entity.setId(UUID.randomUUID());
+        entity.setUserId(UUID.randomUUID());
         entity.setFirstName("James");
         entity.setLastName("Potter");
         entity.setEmail("jamespotter@gmail.com");
@@ -63,12 +63,12 @@ class UserServiceImplTest {
     final void Test_get_user_by_id() {
         when(userRepository.findById(any())).thenReturn(Optional.of(entity));
 
-        UserDto userDto = userService.getUserById(entity.getId());
+        UserDto userDto = userService.getUserById(entity.getUserId());
 
         verify(userRepository, times(1)).findById(any());
 
         assertNotNull(userDto);
-        assertEquals(userDto.getUserId(), entity.getId());
+        assertEquals(userDto.getUserId(), entity.getUserId());
         assertEquals(userDto.getFirstName(), entity.getFirstName());
         assertEquals(userDto.getLastName(), entity.getLastName());
         assertEquals(userDto.getEmail(), entity.getEmail());

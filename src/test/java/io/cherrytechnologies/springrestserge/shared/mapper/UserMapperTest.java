@@ -39,7 +39,7 @@ class UserMapperTest {
                 .setPassword("asdkfjklasdfj24352435");
 
         entity = new UserEntity();
-        entity.setId(UUID.randomUUID());
+        entity.setUserId(UUID.randomUUID());
         entity.setFirstName("James");
         entity.setLastName("Potter");
         entity.setEmail("jamespotter@gmail.com");
@@ -79,7 +79,7 @@ class UserMapperTest {
 
         assertNotNull(entity);
 
-        assertEquals(entity.getId(),userDto.getUserId());
+        assertEquals(entity.getUserId(),userDto.getUserId());
         assertEquals(entity.getFirstName(), userDto.getFirstName());
         assertEquals(entity.getLastName(), userDto.getLastName());
         assertEquals(entity.getEmail(), userDto.getEmail());
@@ -94,7 +94,7 @@ class UserMapperTest {
 
         assertNotNull(dto);
 
-        assertEquals(entity.getId(),dto.getUserId());
+        assertEquals(entity.getUserId(),dto.getUserId());
         assertEquals(entity.getFirstName(), dto.getFirstName());
         assertEquals(entity.getLastName(), dto.getLastName());
         assertEquals(entity.getEmail(), dto.getEmail());
