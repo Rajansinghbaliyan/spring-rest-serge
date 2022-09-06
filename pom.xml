@@ -75,6 +75,7 @@
             <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.0</version>
             </plugin>
         </plugins>
     </build>

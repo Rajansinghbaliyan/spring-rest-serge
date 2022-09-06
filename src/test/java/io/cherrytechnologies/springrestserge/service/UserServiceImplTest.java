@@ -4,6 +4,8 @@ import io.cherrytechnologies.springrestserge.exceptions.UserNotFoundException;
 import io.cherrytechnologies.springrestserge.io.entity.UserEntity;
 import io.cherrytechnologies.springrestserge.io.repository.UserRepository;
 import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
+import io.cherrytechnologies.springrestserge.shared.dto.UserDtoBuilder;
+import io.cherrytechnologies.springrestserge.shared.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +28,8 @@ class UserServiceImplTest {
 
     UserEntity entity;
 
+    UserDto dto;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -37,6 +41,17 @@ class UserServiceImplTest {
         entity.setEncryptedPassword("asdfasiuhdf325345");
         entity.setEmailVerificationStatus(true);
         entity.setEmailVerificationToken("asdfkhjkq3j4thwrekj");
+
+        dto = new UserDtoBuilder()
+                .setUserId(UUID.randomUUID())
+                .setFirstName("James")
+                .setLastName("Potter")
+                .setEmail("jamespotter@gmail.com")
+                .setPassword("asdfasdf98798")
+                .setEncryptedPassword("3245jkjfksaldkjsad")
+                .setEmailVerificationStatus(false)
+                .setEmailVerificationToken("asdfi234rojkefd")
+                .build();
     }
 
     @Test
@@ -67,5 +82,14 @@ class UserServiceImplTest {
         assertThrows(UserNotFoundException.class,
                 () -> userService.getUserById(UUID.randomUUID())
         );
+    }
+
+    @Test
+    final void Test_save_user(){
+        when(userRepository.save(any(UserEntity.class))).thenReturn(UserMapper.dtoToEntity(dto));
+
+        UserDto returnDto = userService.saveUser(dto);
+
+        verify(userRepository,times(1)).save(UserMapper.dtoToEntity(dto));
     }
 }
