@@ -8,9 +8,13 @@ import io.cherrytechnologies.springrestserge.shared.dto.UserDto;
 import io.cherrytechnologies.springrestserge.shared.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -48,14 +52,29 @@ public class UserServiceImpl implements UserService {
         return UserMapper.entityToDto(entity);
     }
 
-    private String encryptedPassword(String rawPassword){
+    @Override
+    public UserDto findByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(userNotFoundExceptionMessage));
+
+        return UserMapper.entityToDto(userEntity);
+    }
+
+    private String encryptedPassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
 
-    private void checkIfEmailExists(String email) throws UserExistsException{
+    private void checkIfEmailExists(String email) throws UserExistsException {
         userRepository.findByEmail(email).ifPresent((entity) -> {
             throw new UserExistsException(userExistsExceptionMessage);
         });
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(userNotFoundExceptionMessage));
+
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
+    }
 }
